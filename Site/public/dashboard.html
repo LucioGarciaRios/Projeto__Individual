@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/6dda5f6271.js" crossorigin="anonymous"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/styleDashboard.css">
+    
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo"><img src="../assets/logoPSFanatic1.png"></div>
+            <div class="menu">
+                <nav>
+
+                    <a href="telaPrincipal.html">Conheça cada console</a>
+                    <a href="historiaCompleta.html">Conheça a história completa</a>
+                    <a href="quiz.html">Teste seus conhecimentos!</a>
+                    <button onclick="sairDaConta()"><i class="fa-solid fa-arrow-right-from-bracket"
+                            style="color: #c4c4c4;"></i></button>
+
+                </nav>
+
+                </nav>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- As divs do primeiro grafico -->
+
+    <div class="quadrados">
+
+        <div class="quadrado1">
+            <h1>Acertos</h1>
+            <h3 id="numero_acerto_inicial">Número</h3>
+
+        </div>
+
+        <div class="quadrado2">
+            <h1>Erros</h1>
+            <h3 id="numero_erro_inicial">Número</h3>
+        </div>
+
+        <div class="quadrado_porcentagem_inicial">
+            <h1>Porcentagem</h1>
+            <h3 id="porcentagem_acerto_inicial">Número</h3>
+
+        </div>
+
+
+
+
+        <div class="quadrado_atual1">
+            <h1>Acertos</h1>
+            <h3 id="numero_acerto">Número</h3>
+        </div>
+
+        <div class="quadrado_atual2">
+            <h1>Erros</h1>
+            <h3 id="numero_erro">Número</h3>
+
+        </div>
+
+        <div class="quadrado_porcentagem_atual">
+            <h1>Porcentagem</h1>
+            <h3 id="porcentagem_acerto">Número</h3>
+
+        </div>
+
+</div>
+
+        
+
+    <br>
+    <br>
+    <main style="display: flex;">
+
+
+        <div class="grafico1">
+            <canvas id="grafico_barras" class="chart-container"
+                style="position: relative; height:40vh; width:80vw"></canvas>
+        </div>
+
+        <div class="grafico2">
+            <canvas id="grafico_barras2" class="chart-container"
+                style="position: relative; height:40vh; width:80vw"></canvas>
+        </div>
+    </main>
+</body>
+<script>
+
+var pontuacaoAcerto = 0;
+var pontuacaoErro = 0;
+
+
+
+function dadosPuxados() {
+    var idUsuario = sessionStorage.getItem("ID_USUARIO")
+    
+
+    console.log('id do usuario: ' + idUsuario);
+
+    fetch(`quiz/dadosDashboard/${idUsuario}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            }).then(function (resposta) {
+
+            if (resposta.ok) {
+                console.log('cheguei!');
+
+                var respo = resposta.json().then(json => {
+                    console.log(json[0])
+                    console.log('respostinha ' + json[0].pontos);
+    
+                    numero_acerto.innerHTML = json[0].pontos
+                    numero_erro.innerHTML = 15 - json[0].pontos 
+                    porcentagem_acerto.innerHTML =( (json[0].pontos/15) * 100).toFixed(2) + "%";
+
+                  pontuacaoAcerto = json[0].pontos  
+                  pontuacaoErro = 15 - json[0].pontos  
+             
+                    sessionStorage.setItem("pontuacao_acerto", pontuacaoAcerto)
+                    sessionStorage.setItem("pontuacao_erro", pontuacaoErro)
+                })
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+    return false;
+}
+
+var acertoFixo = 0;
+var erroFixo = 0;
+
+function dadosPuxados1() {
+    var idUsuario = sessionStorage.getItem("ID_USUARIO")
+    
+
+    console.log('id do usuario: ' + idUsuario);
+
+    fetch(`quiz/plotarGrafico/${idUsuario}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            }).then(function (resposta) {
+
+            if (resposta.ok) {
+                console.log('cheguei!');
+
+                var respo = resposta.json().then(json => {
+                    console.log(json[0])
+                    console.log('respostinha ' + json[0].pontos);
+    
+                    numero_acerto_inicial.innerHTML = json[0].pontos;
+                    numero_erro_inicial.innerHTML = 15 - json[0].pontos;
+                    porcentagem_acerto_inicial.innerHTML = ( (json[0].pontos/15) * 100).toFixed(2) + "%";
+
+                    acertoFixo = json[0].pontos;  
+                    erroFixo = 15 - json[0].pontos;  
+             
+                    sessionStorage.setItem("pontuacao_acerto_fixo", acertoFixo)
+                    sessionStorage.setItem("pontuacao_erro_fixo", erroFixo)
+                })
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+    return false;
+}
+
+
+
+
+
+function retornaAcertos(){
+    var valorAcerto = sessionStorage.getItem("pontuacao_acerto")
+    return valorAcerto
+}
+
+function retornaErros(){
+    var valorErros = sessionStorage.getItem("pontuacao_erro")
+    return valorErros
+}
+
+function retornarAcertoFixo(){
+    var valorAcertoFixo = sessionStorage.getItem("pontuacao_acerto_fixo")
+    return valorAcertoFixo
+
+}
+
+function retornarErroFixo(){
+    var valorErroFixo = sessionStorage.getItem("pontuacao_erro_fixo")
+    return valorErroFixo
+
+}
+
+dadosPuxados();
+dadosPuxados1();
+
+    // Gráfico de Barras fixo
+const labels_grafico_barras = ['Primeira tentativa'];
+const data_grafico_barras = {
+  labels: labels_grafico_barras,
+  datasets: [
+    {
+      label: 'Acertos',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [retornarAcertoFixo()],
+      
+    },
+    {
+      label: 'Erros',
+      backgroundColor: '#36a3ea',
+      borderColor: '#36a3ea',
+      data: [retornarErroFixo()],
+      
+    }
+  ]
+};
+
+    const config_grafico_barras = {
+    type: 'bar',
+    data: data_grafico_barras,
+    
+};
+
+</script>
+
+<script>
+
+// Gráfico de Barras dinamico
+const labels_grafico_barras2 = ['Tentativa atual'];
+const data_grafico_barras2 = {
+  labels: labels_grafico_barras2,
+  datasets: [
+    {
+      label: 'Acertos',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [retornaAcertos()],
+    },
+    {
+      label: 'Erros',
+      backgroundColor: '#36a3ea',
+      borderColor: '#36a3ea',
+      data: [retornaErros()],
+    }
+  ]
+};
+
+    const config_grafico_barras2 = {
+    type: 'bar',
+    data: data_grafico_barras2,
+    
+};
+
+
+
+</script>
+
+<script>
+
+   // Gráfico de barras
+const GraficoBarras = new Chart(
+  document.getElementById('grafico_barras'),
+  config_grafico_barras
+);
+
+    // Gráfico de barras 2
+const GraficoBarras2 = new Chart(
+  document.getElementById('grafico_barras2'),
+  config_grafico_barras2
+);
+
+    function sairDaConta() {
+
+        sessionStorage.clear();
+
+        window.location = "index.html";
+
+
+    }
+
+    console.log('cheguei');
+
+function numeros() {
+    var idUsuario = sessionStorage.getItem("ID_USUARIO")
+
+    console.log('id do usuario: ' + idUsuario);
+
+    fetch(`quiz/dadosDashboard/${idUsuario}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            }).then(function (resposta) {
+
+            if (resposta.ok) {
+                console.log('cheguei!');
+
+                var respo = resposta.json().then(json => {
+                    console.log(json[0])
+                    console.log('respostinha ' + json[0].pontos);
+    
+                    numero_acerto.innerHTML = json[0].pontos
+                    numero_erro.innerHTML = 15 - json[0].pontos 
+                    
+                })
+
+            }
+        })
+        .catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+    return false;
+}
+
+numeros();
+
+</script>
+
+</html>
