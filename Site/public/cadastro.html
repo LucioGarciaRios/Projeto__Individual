@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://kit.fontawesome.com/6dda5f6271.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="../css/styleCadastro.css">
+    <link rel="icon" type="image/png" href="../assets/playstation_icon.svg">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo"><img src="../assets/logoPSFanatic1.png"></div>
+            <div class="menu">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <a href="sobreMim.html">Sobre mim</a>
+                    <a href="faleConosco.html">Precisa de ajuda?</a>
+
+                </nav>
+            </div>
+
+            <div class="social">
+                <a href="https://github.com/LucioGarciaRios"><button><i class="fa-brands fa-github"
+                            style="color: #ffffff;"></i></i></button></a>
+                            <a href="https://www.facebook.com/PlayStationBR/?locale=pt_BR"><button><i class="fa-brands fa-facebook-f"></i></button></a>
+                            <a href="https://www.youtube.com/channel/UC6i4mzH3OPrZV0p64zoz-Ww"><button><i class="fa-brands fa-youtube"></i></button></a>
+
+            </div>
+        </div>
+    </header>
+
+    <div class="alerta_erro">
+        <div class="card_erro" id="cardErro">
+            <span id="mensagem_erro"></span>
+        </div>
+        <div class="alerta_sucesso">
+            <div class="card_sucesso" id="cardSucesso">
+                <span id="mensagem_sucesso"></span>
+            </div>
+
+            <div class="main-login">
+                <div class="left-login">
+                    <h1>Cadastre-se<br>E faça parte da família PlayStation</h1>
+                    <img src="../assets/animacaoCadastro.svg" class="left-login-image" alt="Animação Cadastro">
+
+                </div>
+
+                <div class="right-login">
+                    <div class="card-login">
+                        <h1>Cadastre-se</h1>
+                        <div class="textfield">
+                            <label for="usuario">Nome</label>
+                            <input type="text" name="nome" placeholder="Nome" id="input_nome">
+                        </div>
+                        <div class="textfield">
+                            <label for="dtNascimento">Data de Nascimento</label>
+                            <input type="date" name="dtNascimento" placeholder="" id="input_dtNascimento">
+                        </div>
+                        <div class="textfield">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" placeholder="Email" id="input_email">
+                        </div>
+                        <div class="textfield">
+                            <label for="senha">Senha</label>
+                            <input type="password" name="senha" placeholder="Senha" id="input_senha">
+                        </div>
+
+                        <div class="textfield">
+                            <span> Já é cadastrado? <a href="login.html">Faça o login</a></span>
+                        </div>
+                        <button class="btn-login" onclick="cadastrar()">Criar conta</button>
+                    </div>
+
+                </div>
+            </div>
+</body>
+
+</html>
+
+<script>
+
+    function cadastrar() {
+
+
+        const usuario = {
+            nome: (input_nome.value).charAt(0).toUpperCase() + (input_nome.value).slice(1),
+            dtNasc: input_dtNascimento.value,
+            email: input_email.value,
+            senha: input_senha.value,
+
+        };
+
+        if (usuario.nome == "" || usuario.dtNasc == "" || usuario.email == "" || usuario.senha == "") {
+            cardErro.style.display = "flex"
+            // mensagem_erro.innerHTML = 
+            alert("Campos não preenchidos! Por favor, preencha corretamente.");
+        } else {
+
+
+            //VALIDAÇÃO DE DATA DE NASCIMENTO
+
+            var dtNascInvalido = false;
+            var now = new Date(); //generate a new Date object containing the current date and time.
+
+            const anoInputDtNasc = Number((usuario.dtNasc).slice(0, 4)); //Conversão de String para Number 
+            // The String slice() method extracts the part of a string between the start and end indexes, which are specified by the first and second arguments respectively. 
+
+            var idade = now.getFullYear() - anoInputDtNasc;
+            //O método getFullYear() retorna o ano da data especificada de acordo com a hora local.
+
+            if (idade >= 0 && idade < 13) {
+                dtNascInvalido = true;
+                alert(`Você precisa ter pelo menos 13 anos idade.`)
+
+
+            }
+            else if (idade < 0 || idade > 120) {
+                dtNascInvalido = true;
+                alert(` Digite uma data de nascimento válida.`)
+
+
+            }
+
+            //---------------------------------------------
+
+            //VALIDAÇÃO DE EMAIL
+            // var emailInvalido = false;
+            // const emailValido = /^[A-Za-z0-9]{1}[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*/
+
+            // // /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            // //\. - combinar com .
+            // //?: - noncapture
+
+            // if (!emailValido.test(usuario.email)) {
+            //     emailInvalido = true;
+            //     spanEmailInvalido.innerHTML = 
+            //     alert(` Digite um endereço de e-mail válido.`);
+            // }
+            // else if (emailInvalido == false) {
+            //     spanEmailInvalido.innerHTML = "";
+            // }
+
+
+            //---------------------------------------------
+
+        }
+
+        //cadastrar
+
+        if (dtNascInvalido == false) {
+
+            fetch("/usuarios/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/usuario.js
+                    nomeServer: usuario.nome,
+                    dtNascServer: usuario.dtNasc,
+                    emailServer: usuario.email,
+                    senhaServer: usuario.senha
+                })
+            }).then(function (resposta) {
+
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+
+                    // cardSucesso.style.display = "flex";
+                    // mensagem_sucesso.innerHTML = 
+                    alert("Cadastro realizado com sucesso! Redirecionando para tela de Login...");
+
+                    setTimeout(() => {
+                        window.location = "login.html";
+                    }, "2000")
+
+                } else {
+                    throw ("Houve um erro ao tentar realizar o cadastro!");
+                }
+            }).catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+
+            return false;
+
+        }
+
+    }
+
+
+</script>
