@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://kit.fontawesome.com/6dda5f6271.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/styleLogin.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo"><img src="../assets/logoPSFanatic1.png"></div>
+            <div class="menu">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <a href="cadastro.html">Cadastre-se</a>
+                    <a href="sobreMim.html">Sobre mim</a>
+                    <a href="faleConosco.html">Precisa de ajuda?</a>
+                
+                </nav>
+            </div>
+
+            <div class="social">
+                <a href="https://github.com/LucioGarciaRios"><button><i class="fa-brands fa-github" style="color: #ffffff;"></i></i></button></a>
+                <a href="https://www.facebook.com/PlayStationBR/?locale=pt_BR"><button><i class="fa-brands fa-facebook-f"></i></button></a>
+                <a href="https://www.youtube.com/channel/UC6i4mzH3OPrZV0p64zoz-Ww"><button><i class="fa-brands fa-youtube"></i></button></a>
+
+            </div>
+        </div>
+    </header>
+
+
+
+
+    <div class="main-login">
+        <div class="left-login">
+            <h1>Faça o login<br>E saiba mais sobre o mundo PlayStation</h1>
+            <img src="../assets/animacaoLogin.svg" class="left-login-image" alt="Animação Login">
+
+        </div>
+
+    <div class="right-login">
+        <div class="card-login">
+            <h1>Login</h1>
+            <div class="textfield">
+                <label for="usuario">Email</label>
+                <input type="text" name="email" placeholder="Email" id="input_login">
+            </div>
+            <div class="textfield">
+                <label for="senha">Senha</label>
+                <input type="password" name="senha" placeholder="Senha" id="input_senha">
+            </div>
+            <div class="textfield">
+                <!-- <a href="recuperacaoSenha.html">Esqueceu a senha?</a> <br> -->
+
+                <span> Não é cadastrado? <a href="cadastro.html">Cadastre-se</a></span>
+            </div>
+
+
+            <button class="btn-login" onclick="entrar()">Login</button>
+        </div>
+           
+    </div>    
+</div>
+
+<!-- <div id="mensagem_sucesso"></div>
+<div id="mensagem_erro"></div> -->
+</body>
+</html>
+<script>
+
+
+
+function entrar() {
+        const usuario = {
+            login: input_login.value,
+            senha: input_senha.value
+        };
+
+        if (usuario.login == "" || usuario.senha == "") {
+            // cardErro.style.display = "flex"
+            alert("ERRO! Preencha os campos adequadamente.");
+
+            return false;
+        }
+        else {
+
+            // cardErro.style.display = "none"
+            // mensagem_erro.innerHTML = "";
+
+            console.log("FORM LOGIN: ", usuario.login);
+            console.log("FORM SENHA: ", usuario.senha);
+
+            fetch("/usuarios/autenticar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    loginServer: usuario.login,
+                    senhaServer: usuario.senha
+                })
+            }).then(function (resposta) {
+
+                if (resposta.ok) {
+
+                    // cardErro.style.display = "none"
+                    // mensagem_erro.innerHTML = "";
+
+                    alert("Login realizado com sucesso!")
+
+                    console.log(resposta);
+
+                    resposta.json().then(json => {
+                        console.log(json);
+                        console.log(JSON.stringify(json));
+
+                        sessionStorage.EMAIL_USUARIO = json.email;
+                        sessionStorage.NOME_USUARIO = json.nome;
+                        sessionStorage.ID_USUARIO = json.idUsuario;
+                       
+
+                        setTimeout(() => {
+                            window.location = "telaPrincipal.html";
+                        }, "2000")
+                    });
+
+                } else {
+
+                    // cardErro.style.display = "flex";
+                    // mensagem_erro.innerHTML = 
+                   alert("Usuário ou senha incorretos! Por favor, tente novamente.");
+
+                    console.log("Houve um erro ao tentar realizar o login!");
+
+                    resposta.text().then(texto => {
+                        console.error(texto);
+                    });
+                }
+
+            }).catch(function (erro) {
+                console.log(erro);
+            })
+
+            return false;
+
+        }
+
+
+    }
+
+   
+
+
+
+</script>
