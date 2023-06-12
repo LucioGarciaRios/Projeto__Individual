@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://kit.fontawesome.com/6dda5f6271.js" crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sobre mim</title>
+    <link rel="stylesheet" href="../css/sobreMim.css">
+    <link rel="icon" type="image/png" href="../assets/logoPSFanatic.jpg">
+    
+  </head>
+  <body>
+
+    <header>
+        <div class="container">
+            <div class="logo"><img src="../assets/logoPSFanatic1.png"></div>
+            <div class="menu">
+                <nav>
+                    <a href="index.html">Home</a>
+                    <a href="cadastro.html">Cadastre-se</a>
+                    <a href="faleConosco.html">Precisa de ajuda?</a>
+                    <a href="login.html">Login</a>
+                
+                </nav>
+            </div>
+
+            <div class="social">
+                <a href="https://github.com/LucioGarciaRios"><button><i class="fa-brands fa-github" style="color: #ffffff;"></i></i></button></a>
+                <a href="https://www.facebook.com/PlayStationBR/?locale=pt_BR"><button><i class="fa-brands fa-facebook-f"></i></button></a>
+                <a href="https://www.youtube.com/channel/UC6i4mzH3OPrZV0p64zoz-Ww"><button><i class="fa-brands fa-youtube"></i></button></a>
+
+            </div>
+        </div>
+    </header>
+    
+    <div class = "about-wrapper">
+      <div class = "about-left">
+        <div class = "about-left-content">
+          <div>
+            <div class = "shadow">
+              <div class = "about-img">
+                <img src = "../assets/minhaFoto.jpg" alt = "about image">
+              </div>
+            </div>
+
+            <h2>Lúcio<br>Garcia</h2>
+            <h3>Estudante de ads</h3>
+          </div>
+
+        </div>
+      </div>
+
+      <div class = "sobre-direita">
+        <h1>Olá<span>!</span></h1>
+        <h2>Saiba mais sobre mim</h2>
+        <div class = "botoes">
+          <button type = "button" class = "btn btn-esquerda" onclick="trocar_texto()" >Sobre mim</button>
+          <button type = "button" class = "btn btn-direita" onclick="trocar_texto1()">Jogos na minha vida</button>
+        </div>
+
+        <div class = "sobre-mim" id="div_texto">
+          <p>Eu sou o Lúcio, nascido e criado na cidade de São Paulo. Tenho 24 anos de idade e sou graduado em Engenharia Mecânica.<br> Sou apaixonado por tecnologia e essa paixão me levou a fazer um curso de Análise e Desenvolvimento de Sistemas na faculdade SPTECH.<br>
+
+            Eu sempre fui uma pessoa perseverante e determinada, e foi isso que me ajudou a me destacar na faculdade de engenharia. Hoje em dia, continuo com a mesma atitude e busco constantemente evoluir profissionalmente e pessoalmente.</p>
+          
+        </div>
+      </div>
+    </div>
+
+
+  </body>
+</html>
+
+<script>
+
+function trocar_texto(){
+
+div_texto.innerHTML = `<p>Eu sou o Lúcio, nascido e criado na cidade de São Paulo. Tenho 24 anos de idade e sou graduado em Engenharia Mecânica.<br> Sou apaixonado por tecnologia e essa paixão me levou a fazer um curso de Análise e Desenvolvimento de Sistemas na faculdade SPTECH.<br>
+Eu sempre fui uma pessoa perseverante e determinada, e foi isso que me ajudou a me destacar na faculdade de engenharia. Hoje em dia, continuo com a mesma atitude e busco constantemente evoluir profissionalmente e pessoalmente.</p>`
+
+}
+
+
+function trocar_texto1(){
+
+  div_texto.innerHTML = `<p>Desde criança, sempre fui apaixonado por videogames e cresci jogando nos consoles da marca Playstation. Para mim, não há nada mais emocionante do que a sensação de estar imerso em um universo virtual repleto de aventuras e desafios.<br>
+O Playstation me fascina por sua qualidade gráfica e histórias únicas, criando ambientes incrivelmente realistas e imersivos.<br> 
+ Além disso, a evolução contínua dos consoles Playstation garante que a expectativa para novos lançamentos nunca acabe.<br>
+Em resumo, minha paixão pelo Playstation é inabalável e estou ansioso para continuar explorando novas histórias à medida que a tecnologia dos videogames continua avançando.
+ </p>`
+
+
+}
+
+  
+</script>
